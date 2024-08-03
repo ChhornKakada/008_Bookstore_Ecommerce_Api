@@ -1,0 +1,67 @@
++ creating project: laravel new porject-name
++ php artisan make:model Author --all : create both model and table for migration.
+    - php artisan make:model BookImage --all: for wanting to use "_"
+
++ php artisan migrate:fresh --seed : migrate both tables and datas
++ php artisan db:seed --class=GenreSeeder : migrate specific data
+
++ when we need Resources example of "GenreResource" because:
+    - want to filter the data we want to show in api and rename the name of column
+    - create: php artisan make:resource GenreResource
+    - 'Resource' use for a data while 'Collection' use for array
+
++ create controller: php artisan make:controller controllerName
+
++ if you always cannot add to db use this command "php artisan route:clear", "php artisan cache:clear"
+
+
+"
+/ If an exception occurs when attempting to run a query, we'll format the error
+    709▕         // message to include the bindings with SQL, which will make this exception a
+    710▕         // lot more helpful to the developer instead of just the database's errors.
+    711▕         catch (Exception $e) {
+  ➜ 712▕             throw new QueryException(
+    713▕                 $query, $this->prepareBindings($bindings), $e
+    714▕             );
+    715▕         }
+    716▕     }
+    "
+
+    it means doesn't have table
+
+
+//
+
+FROM php:7.4-fpm
+
+# Arguments defined in docker-compose.yml
+ARG user
+ARG uid
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+# Get latest Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+
+
+# Set working directory
+WORKDIR /var/www
+COPY . /var/www/
+
+RUN composer install
+
